@@ -1,12 +1,13 @@
 const express = require("express");
 const axios = require("axios");
-const bodyParser = require("body-parser");
 require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 
-const PORT = 5002; // unique port per worker
+const PORT = 5002;
 
 app.post("/suggest", async (req, res) => {
   const { prompt } = req.body;
@@ -24,20 +25,31 @@ app.post("/suggest", async (req, res) => {
       {
         headers: {
           Authorization: `Bearer ${process.env.GEMINI_API_KEY}`,
-          "HTTP-Referer": "http://localhost:3000", // or your domain
           "Content-Type": "application/json",
         },
       }
     );
 
-    const aiReply = response.data.choices[0].message.content;
-    res.json({ suggestion: aiReply });
+    // Defensive check
+    const choices = response?.data?.choices;
+    if (
+      Array.isArray(choices) &&
+      choices.length > 0 &&
+      choices[0]?.message?.content
+    ) {
+      const aiReply = choices[0].message.content;
+      res.json({ suggestion: aiReply });
+    } else {
+      console.error("Invalid response format:", response.data);
+      res
+        .status(500)
+        .json({ error: "Invalid response format from OpenRouter" });
+    }
   } catch (error) {
     console.error("OpenRouter error:", error?.response?.data || error.message);
     res.status(500).json({ error: "Failed to get response from OpenRouter" });
   }
 });
-
 app.listen(PORT, () => {
   console.log(
     `GPT Worker (via OpenRouter) running on http://localhost:${PORT}`

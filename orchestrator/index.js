@@ -1,30 +1,48 @@
 const express = require("express");
 const axios = require("axios");
 const { mergeSuggestions } = require("../utils/merge");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post("/suggest", async (req, res) => {
   const { prompt } = req.body;
 
   try {
-    // Step 1: Send prompt to all workers
-    const [gpt, mock1, mock2] = await Promise.all([
-      axios.post("http://localhost:5001/gpt", { prompt }),
-      axios.post("http://localhost:5002/mock1", { prompt }),
-      axios.post("http://localhost:5003/mock2", { prompt }),
-    ]);
+    const endpoints = [
+      { name: "GPT", url: "http://localhost:5006/suggest" },
+      // { name: "Gemini", url: "http://localhost:5002/suggest" },
+      // { name: "LLaMA", url: "http://localhost:5003/suggest" },
+    ];
 
-    // Step 2: Merge responses
-    const merged = mergeSuggestions([gpt.data, mock1.data, mock2.data]);
+    const results = await Promise.allSettled(
+      endpoints.map((ep) =>
+        axios.post(ep.url, { prompt }).then((res) => ({
+          name: ep.name,
+          suggestion: res.data?.suggestion || `No suggestion from ${ep.name}`,
+        }))
+      )
+    );
+
+    const suggestions = results.map((result, index) =>
+      result.status === "fulfilled"
+        ? result.value.suggestion
+        : `Error from ${endpoints[index].name}`
+    );
+
+    const merged = mergeSuggestions(suggestions);
 
     res.json({
-      suggestions: [gpt.data, mock1.data, mock2.data],
+      suggestions,
       final: merged,
     });
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(
+      "Orchestrator fatal error:",
+      error?.response?.data || error.message
+    );
     res.status(500).json({ error: "Failed to get suggestions" });
   }
 });

@@ -53,7 +53,7 @@ const BrainstormForm = () => {
           </ul>
 
           <h3>🧠 Final Merged Suggestion:</h3>
-          <p>
+          <p className="bg-amber-800">
             <strong>{finalIdea}</strong>
           </p>
         </div>

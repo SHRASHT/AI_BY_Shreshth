@@ -5,6 +5,8 @@ require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
+const cors = require("cors");
+app.use(cors());
 
 const PORT = 5001; // unique port per worker
 
@@ -15,7 +17,7 @@ app.post("/suggest", async (req, res) => {
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "deepseek/deepseek-r1:free",
+        model: "microsoft/mai-ds-r1:free",
         messages: [
           { role: "system", content: "You are an expert brainstormer." },
           { role: "user", content: `Give a creative idea for: ${prompt}` },
@@ -23,21 +25,33 @@ app.post("/suggest", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-          "HTTP-Referer": "http://localhost:3000", // or your domain
+          Authorization: `Bearer ${process.env.MICROSOFT_API_KEY}`,
+          "HTTP-Referer": "http://localhost:3000",
           "Content-Type": "application/json",
         },
       }
     );
 
-    const aiReply = response.data.choices[0].message.content;
-    res.json({ suggestion: aiReply });
+    // Defensive check
+    const choices = response?.data?.choices;
+    if (
+      Array.isArray(choices) &&
+      choices.length > 0 &&
+      choices[0]?.message?.content
+    ) {
+      const aiReply = choices[0].message.content;
+      res.json({ suggestion: aiReply });
+    } else {
+      console.error("Invalid response format:", response.data);
+      res
+        .status(500)
+        .json({ error: "Invalid response format from OpenRouter" });
+    }
   } catch (error) {
     console.error("OpenRouter error:", error?.response?.data || error.message);
     res.status(500).json({ error: "Failed to get response from OpenRouter" });
   }
 });
-
 app.listen(PORT, () => {
   console.log(
     `GPT Worker (via OpenRouter) running on http://localhost:${PORT}`
