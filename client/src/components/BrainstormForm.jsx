@@ -26,36 +26,57 @@ const BrainstormForm = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your topic or problem..."
-          style={{ width: "60%", padding: "10px" }}
-          required
-        />
-        <button type="submit" style={{ padding: "10px", marginLeft: "10px" }}>
-          Get Suggestions
+    <div className="flex flex-col items-center">
+      <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-6">
+        <div className="relative group">
+          <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Enter your idea, concept, or challenge..."
+            className="cyber-input"
+            required
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-neon-pink via-neon-blue to-cyber-purple opacity-0 group-hover:opacity-10 transition-opacity rounded-lg pointer-events-none"></div>
+        </div>
+        <button type="submit" className="cyber-btn" disabled={loading}>
+          {loading ? "Processing..." : "Generate Ideas"}
         </button>
       </form>
 
-      {loading && <p>Loading suggestions...</p>}
+      {loading && (
+        <div className="loading mt-8">
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-4 h-4 bg-neon-blue rounded-full animate-ping"></div>
+            <p>Neural Network Processing...</p>
+          </div>
+        </div>
+      )}
 
       {responses.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Responses from Models:</h3>
-          <ul>
+        <div className="w-full max-w-2xl mt-12 space-y-8">
+          <div className="space-y-4">
+            <h3 className="text-neon-blue text-2xl font-bold flex items-center">
+              <span className="mr-2">💡</span>
+              AI Model Insights
+            </h3>
             {responses.map((resp, i) => (
-              <li key={i}>{resp}</li>
+              <div key={i} className="response-card backdrop-blur-sm">
+                <div className="flex items-start">
+                  <span className="text-neon-pink mr-3 text-xl">#{i + 1}</span>
+                  <p className="text-gray-200">{resp}</p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
 
-          <h3>🧠 Final Merged Suggestion:</h3>
-          <p className="bg-amber-800">
-            <strong>{finalIdea}</strong>
-          </p>
+          <div className="final-idea">
+            <h3 className="text-neon-yellow text-2xl font-bold mb-4 flex items-center">
+              <span className="mr-2">⚡</span>
+              Synthesized Insight
+            </h3>
+            <p className="text-white text-lg leading-relaxed">{finalIdea}</p>
+          </div>
         </div>
       )}
     </div>
