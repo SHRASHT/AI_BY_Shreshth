@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const PORT = 5006; // You can choose any free port
+const PORT = 5006;
 
 app.post("/suggest", async (req, res) => {
   const { prompt } = req.body;
@@ -15,7 +15,7 @@ app.post("/suggest", async (req, res) => {
   try {
     const response = await axios.post("http://localhost:11434/api/generate", {
       model: "gemma:2b",
-      prompt: ` ${prompt}`,
+      prompt: ` Background of ${prompt}`,
       stream: false,
     });
 

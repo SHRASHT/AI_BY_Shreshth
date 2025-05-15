@@ -4,11 +4,28 @@ function mergeSuggestions(suggestions) {
   );
 
   if (filtered.length === 0) {
-    return "❌ All suggestion models failed. Please try again later.";
+    return "ERROR: All suggestion models failed. Please try again later.";
   }
 
-  // Simple merge: join them with spacing
-  return `💡 Final Idea: ${filtered.join(" | ")}`;
+  // Create a well-documented format
+  const formattedResponse = `
+=== AI BRAINSTORMING RESULTS ===
+
+${filtered
+  .map(
+    (suggestion, index) => `
+SUGGESTION #${index + 1}:
+----------------
+${suggestion}
+`
+  )
+  .join("\n")}
+
+=== SYNTHESIZED INSIGHT ===
+${filtered.join("\n\nKey Point: ")}
+`;
+
+  return formattedResponse;
 }
 
 module.exports = { mergeSuggestions };

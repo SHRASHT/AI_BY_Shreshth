@@ -4,19 +4,16 @@ import axios from "axios";
 const BrainstormForm = () => {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
-  const [responses, setResponses] = useState([]);
-  const [finalIdea, setFinalIdea] = useState("");
+  const [formattedResponse, setFormattedResponse] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setResponses([]);
-    setFinalIdea("");
+    setFormattedResponse("");
 
     try {
       const res = await axios.post("http://localhost:5000/suggest", { prompt });
-      setResponses(res.data.suggestions);
-      setFinalIdea(res.data.final);
+      setFormattedResponse(res.data.final);
     } catch (err) {
       console.error(err);
       alert("Error fetching suggestions.");
@@ -53,30 +50,11 @@ const BrainstormForm = () => {
         </div>
       )}
 
-      {responses.length > 0 && (
-        <div className="w-full max-w-2xl mt-12 space-y-8">
-          <div className="space-y-4">
-            <h3 className="text-neon-blue text-2xl font-bold flex items-center">
-              <span className="mr-2">💡</span>
-              AI Model Insights
-            </h3>
-            {responses.map((resp, i) => (
-              <div key={i} className="response-card backdrop-blur-sm">
-                <div className="flex items-start">
-                  <span className="text-neon-pink mr-3 text-xl">#{i + 1}</span>
-                  <p className="text-gray-200">{resp}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="final-idea">
-            <h3 className="text-neon-yellow text-2xl font-bold mb-4 flex items-center">
-              <span className="mr-2">⚡</span>
-              Synthesized Insight
-            </h3>
-            <p className="text-white text-lg leading-relaxed">{finalIdea}</p>
-          </div>
+      {formattedResponse && (
+        <div className="w-full max-w-2xl mt-12">
+          <pre className="whitespace-pre-wrap font-mono text-sm bg-opacity-20 bg-black p-6 rounded-lg border-2 border-neon-blue text-gray-200">
+            {formattedResponse}
+          </pre>
         </div>
       )}
     </div>

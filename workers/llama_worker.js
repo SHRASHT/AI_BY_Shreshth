@@ -20,7 +20,7 @@ app.post("/suggest", async (req, res) => {
         model: "meta-llama/llama-4-maverick:free",
         messages: [
           { role: "system", content: "You are an expert brainstormer." },
-          { role: "user", content: `Give a creative idea for: ${prompt}` },
+          { role: "user", content: `Give future opportunities in : ${prompt}` },
         ],
       },
       {

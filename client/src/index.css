@@ -15,11 +15,18 @@
 body {
   background-color: var(--dark-bg);
   color: #fff;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: "Rajdhani", sans-serif;
   min-height: 100vh;
-  background-image: 
-    linear-gradient(45deg, rgba(255, 45, 149, 0.1) 0%, transparent 70%),
-    radial-gradient(circle at top right, rgba(0, 255, 249, 0.1), transparent 70%);
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 45, 149, 0.1) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(0, 255, 249, 0.1),
+      transparent 70%
+    );
 }
 
 .cyber-btn {
@@ -43,13 +50,11 @@ body {
 
 .cyber-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 
-    0 0 25px var(--neon-pink),
-    inset 0 0 10px var(--neon-pink);
+  box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px var(--neon-pink);
 }
 
 .cyber-btn:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -85,9 +90,7 @@ body {
 
 .cyber-input:focus {
   outline: none;
-  box-shadow: 
-    0 0 20px var(--neon-blue),
-    inset 0 0 10px rgba(0, 255, 249, 0.2);
+  box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px rgba(0, 255, 249, 0.2);
   transform: scale(1.02);
 }
 
@@ -98,8 +101,7 @@ body {
   background: rgba(10, 11, 14, 0.9);
   border: 2px solid var(--neon-blue);
   border-radius: 16px;
-  box-shadow: 
-    0 0 20px rgba(0, 255, 249, 0.2),
+  box-shadow: 0 0 20px rgba(0, 255, 249, 0.2),
     inset 0 0 20px rgba(0, 255, 249, 0.1);
   backdrop-filter: blur(10px);
   transform: translateY(0);
@@ -108,14 +110,18 @@ body {
 
 .cyber-container:hover {
   transform: translateY(-5px);
-  box-shadow: 
-    0 0 30px rgba(0, 255, 249, 0.3),
+  box-shadow: 0 0 30px rgba(0, 255, 249, 0.3),
     inset 0 0 30px rgba(0, 255, 249, 0.2);
 }
 
 .cyber-title {
   font-size: 3.5rem;
-  background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--cyber-purple));
+  background: linear-gradient(
+    45deg,
+    var(--neon-pink),
+    var(--neon-blue),
+    var(--cyber-purple)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
@@ -140,7 +146,11 @@ body {
 }
 
 .final-idea {
-  background: linear-gradient(45deg, rgba(255, 45, 149, 0.1), rgba(0, 255, 249, 0.1));
+  background: linear-gradient(
+    45deg,
+    rgba(255, 45, 149, 0.1),
+    rgba(0, 255, 249, 0.1)
+  );
   border: 2px solid var(--neon-yellow);
   padding: 1.5rem;
   margin-top: 2rem;
@@ -156,13 +166,28 @@ body {
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 @keyframes glow {
-  0% { opacity: 0.8; text-shadow: 0 0 20px rgba(255, 45, 149, 0.5); }
-  50% { opacity: 1; text-shadow: 0 0 30px rgba(255, 45, 149, 0.8); }
-  100% { opacity: 0.8; text-shadow: 0 0 20px rgba(255, 45, 149, 0.5); }
+  0% {
+    opacity: 0.8;
+    text-shadow: 0 0 20px rgba(255, 45, 149, 0.5);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 30px rgba(255, 45, 149, 0.8);
+  }
+  100% {
+    opacity: 0.8;
+    text-shadow: 0 0 20px rgba(255, 45, 149, 0.5);
+  }
 }

@@ -12,7 +12,7 @@ app.post("/suggest", async (req, res) => {
 
   try {
     const endpoints = [
-      { name: "GPT", url: "http://localhost:5006/suggest" },
+      { name: "GPT", url: "http://localhost:5007/suggest" },
       { name: "Gemini", url: "http://localhost:5002/suggest" },
       // { name: "LLaMA", url: "http://localhost:5003/suggest" },
     ];

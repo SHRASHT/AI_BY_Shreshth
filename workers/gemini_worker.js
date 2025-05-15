@@ -19,7 +19,7 @@ app.post("/suggest", async (req, res) => {
         model: "google/gemini-2.0-flash-exp:free",
         messages: [
           { role: "system", content: "You are an expert brainstormer." },
-          { role: "user", content: `Give a creative idea for: ${prompt}` },
+          { role: "user", content: `Give Background for : ${prompt}` },
         ],
       },
       {
